@@ -27,15 +27,15 @@ export default function Dashboard1Screen() {
           </Text>
         </View>
 
-        <View style={styles.headerRight}>
-          <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
-            <View style={styles.notificationIcon}>
-              <Ionicons name="notifications-outline" size={24} color="#fff" />
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>3</Text>
-              </View>
+         <View style={styles.headerRight}>
+        <TouchableOpacity onPress={() => navigation.navigate('NotificationsScreen')}>
+          <View style={styles.notificationIcon}>
+            <Ionicons name="notifications-outline" size={24} color="#fff" />
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>3</Text>
             </View>
-          </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
 
           <TouchableOpacity onPress={() => console.log('Abrir menú')}>
             <Ionicons name="menu-outline" size={28} color="#fff" />

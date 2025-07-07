@@ -24,18 +24,16 @@ export default function RemesaEfectivoFormularioScreen() {
   const [showBiometria, setShowBiometria] = useState(false);
 
   const handleConfirmar = () => {
-    // Simula escaneo facial
     setShowBiometria(true);
     setTimeout(() => {
       setShowBiometria(false);
-      // Aquí puedes redirigir a la siguiente pantalla
       // navigation.navigate('RemesaEfectivoRevisionScreen');
-    }, 3000); // 3 segundos de espera
+    }, 3000);
   };
 
   return (
-    <>
-      <ScrollView style={styles.container}>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Retira Dinero En Efectivo</Text>
 
         <TextInput
@@ -97,7 +95,7 @@ export default function RemesaEfectivoFormularioScreen() {
         />
 
         <Text style={styles.helpText}>
-          Introduce el nombre de teléfono donde se te enviará el código que has de enseñar junto a tu documento de identidad en el punto de recogida.
+          Introduce el número de teléfono donde se te enviará el código que has de enseñar junto a tu documento de identidad en el punto de recogida.
         </Text>
 
         <TextInput
@@ -129,26 +127,24 @@ export default function RemesaEfectivoFormularioScreen() {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Modal de Biometría */}
       <Modal visible={showBiometria} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.faceContainer}>
             <Image
-              source={require('../assets/face_scan.png')} // Asegúrate de tener esta imagen
+              source={require('../assets/face_scan.png')}
               style={styles.faceImage}
             />
           </View>
         </View>
       </Modal>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#1a1a1a',
     padding: 16,
+    backgroundColor: '#1a1a1a',
   },
   title: {
     color: '#fff',
@@ -212,4 +208,5 @@ const styles = StyleSheet.create({
     tintColor: '#fff',
   },
 });
+
 

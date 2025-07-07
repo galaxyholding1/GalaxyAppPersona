@@ -1,5 +1,4 @@
-// Importación de componentes y módulos necesarios desde React y React Native
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,49 +8,56 @@ import {
   StyleSheet,
 } from 'react-native';
 import Logo from '../assets/galaxy_logo1.svg';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Iconos vectoriales
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-// Componente principal para el paso 5 del registro
-const RegisterStep5Screen = () => {
-  const colorScheme = useColorScheme(); // Detecta si el sistema está en modo oscuro o claro
-  const isDarkMode = colorScheme === 'dark'; // Booleano que indica si el tema es oscuro
+// Define el stack de navegación
+type RootStackParamList = {
+  RegisterStep5: undefined;
+  RegisterStep6: undefined;
+};
 
-  // Estados del componente: contraseña ingresada y visibilidad de la contraseña
+type Props = NativeStackScreenProps<RootStackParamList, 'RegisterStep5'>;
+
+const RegisterStep5Screen: React.FC<Props> = ({ navigation }) => {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // Función para determinar la fuerza de la contraseña
   const getPasswordStrength = () => {
     if (password.length > 10) return 'Fuerte';
     if (password.length > 5) return 'Media';
     return 'Débil';
   };
 
-  // Función para obtener el color asociado a la fuerza de la contraseña
   const getPasswordStrengthColor = () => {
-    if (password.length > 10) return '#FF4081'; // Rosa fuerte para fuerte
-    if (password.length > 5) return '#FFC107'; // Amarillo para media
-    return '#F44336'; // Rojo para débil
+    if (password.length > 10) return '#FF4081';
+    if (password.length > 5) return '#FFC107';
+    return '#F44336';
+  };
+
+  const handleContinue = () => {
+    navigation.navigate('RegisterStep6');
   };
 
   return (
     <View
-  style={[
-    styles.container,
-    { backgroundColor: isDarkMode ? '#121212' : '#ffffff' },
-  ]}
->
-  <Logo width={140} height={60} style={{ alignSelf: 'center', marginBottom: 20 }} />
-  <Text style={[styles.title, { color: isDarkMode ? '#ff9800' : '#8b4513' }]}>
-    Crear contraseña
-  </Text>
+      style={[
+        styles.container,
+        { backgroundColor: isDarkMode ? '#121212' : '#ffffff' },
+      ]}
+    >
+      {/* Logo superior */}
+      <Logo width={140} height={60} style={{ alignSelf: 'center', marginBottom: 20 }} />
 
       {/* Título */}
       <Text style={[styles.title, { color: isDarkMode ? '#ff9800' : '#8b4513' }]}>
         Crear contraseña
       </Text>
 
-      {/* Contenedor del input de contraseña */}
+      {/* Input de contraseña */}
       <View style={styles.inputContainer}>
         <TextInput
           style={[
@@ -68,7 +74,7 @@ const RegisterStep5Screen = () => {
           onChangeText={setPassword}
         />
 
-        {/* Botón para mostrar/ocultar la contraseña */}
+        {/* Icono para mostrar/ocultar contraseña */}
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
           style={styles.iconContainer}
@@ -81,12 +87,12 @@ const RegisterStep5Screen = () => {
         </Pressable>
       </View>
 
-      {/* Texto que indica la seguridad de la contraseña */}
+      {/* Indicador de seguridad */}
       <Text style={{ color: isDarkMode ? '#ffffff' : '#000000', marginBottom: 8 }}>
         Seguridad: <Text style={{ fontWeight: 'bold' }}>{getPasswordStrength()}</Text>
       </Text>
 
-      {/* Barra de progreso que indica fuerza de la contraseña */}
+      {/* Barra de progreso de seguridad */}
       <View style={styles.strengthBarBackground}>
         <View
           style={[
@@ -99,12 +105,12 @@ const RegisterStep5Screen = () => {
         />
       </View>
 
-      {/* Texto adicional si la contraseña es fuerte */}
+      {/* Mensaje si es una contraseña fuerte */}
       {password.length > 10 && (
         <Text style={[styles.hintText, { color: '#FF4081' }]}>¡Esta es la buena!</Text>
       )}
 
-      {/* Sección para código promocional o de invitación */}
+      {/* Información sobre código promocional */}
       <View style={{ marginTop: 40 }}>
         <Text style={[styles.codeLabel, { color: isDarkMode ? '#ffffff' : '#000000' }]}>
           ¿Tienes un código?
@@ -124,8 +130,8 @@ const RegisterStep5Screen = () => {
         </Text>
       </View>
 
-      {/* Botón para continuar con el proceso */}
-      <Pressable style={styles.continueButton}>
+      {/* Botón de continuar */}
+      <Pressable style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueText}>continuar</Text>
       </Pressable>
     </View>
@@ -198,3 +204,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+

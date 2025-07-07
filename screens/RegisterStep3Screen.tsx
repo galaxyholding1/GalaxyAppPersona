@@ -1,5 +1,5 @@
 // Pantalla del tercer paso del registro: información laboral
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
+  useColorScheme,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import GalaxyLogo from '../assets/galaxy_logo1.svg'; // SVG importado como componente
@@ -16,7 +17,7 @@ type RootStackParamList = {
   RegisterStep4Screen: undefined;
 };
 
-type Props = NativeStackScreenProps<RootStackParamList, 'RegisterStep3Screen'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'RegisterStep3'>;
 
 const RegisterStep3Screen: React.FC<Props> = ({ navigation }) => {
   const [direccion1, setDireccion1] = useState('');
@@ -26,14 +27,24 @@ const RegisterStep3Screen: React.FC<Props> = ({ navigation }) => {
   const [provincia, setProvincia] = useState('');
   const [pais, setPais] = useState('');
 
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+
+  const isComplete = direccion1 && codigoPostal && localidad && provincia && pais;
+
   const handleContinue = () => {
-    if (direccion1 && codigoPostal && localidad && provincia && pais) {
-      navigation.navigate('RegisterStep4Screen');
+    if (isComplete) {
+      navigation.navigate('RegisterStep4');
     }
   };
 
-  return (
-    <View style={styles.container}>
+   return (
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? '#1d1d1d' : '#f9f9f9' },
+      ]}
+    >
       {/* Barra de progreso */}
       <View style={styles.progressBar}>
         <View style={[styles.step, styles.activeStep]} />
@@ -103,10 +114,8 @@ const RegisterStep3Screen: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-export default RegisterStep3Screen;
-
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 30, backgroundColor: '#1d1d1d' },
+  container: { flex: 1, padding: 30 },
   progressBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -156,3 +165,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default RegisterStep3Screen;

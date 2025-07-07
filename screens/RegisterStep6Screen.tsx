@@ -7,43 +7,40 @@ import {
   StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Logo from '../assets/galaxy_logo1.svg'; //
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import Logo from '../assets/galaxy_logo1.svg';
 
-// Pantalla del paso 6 del registro
-const RegisterStep6Screen = () => {
-  // Detecta si el sistema está en modo oscuro
+type RootStackParamList = {
+  RegisterStep6: undefined;
+  RegisterStep7: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'RegisterStep6'>;
+
+const RegisterStep6Screen: React.FC<Props> = ({ navigation }) => {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
 
-  // Estado para la opción seleccionada: 'no', 'yes' o null (sin selección)
   const [selectedOption, setSelectedOption] = useState<'no' | 'yes' | null>('no');
+
+  const handleContinue = () => {
+    navigation.navigate('RegisterStep7');
+  };
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: isDarkMode ? '#121212' : '#ffffff' }, // Fondo según tema
+        { backgroundColor: isDarkMode ? '#121212' : '#ffffff' },
       ]}
     >
-       {/* Logo SVG de la aplicación */}
-      <SvgUri
-        width="140"
-        height="60"
-        source={require('../assets/galaxy_logo1.svg')}
-        style={{ alignSelf: 'center', marginBottom: 20 }}
-      />
+      {/* Logo como componente */}
+      <Logo width={140} height={60} style={{ alignSelf: 'center', marginBottom: 20 }} />
 
-      {/* Título principal */}
-      <Text style={[styles.title, { color: isDarkMode ? '#ff9800' : '#8b4513' }]}>
-        Crear contraseña
-      </Text>
-
-      {/* Pregunta clave sobre impuestos en EE.UU. */}
       <Text style={[styles.question, { color: isDarkMode ? '#ffffff' : '#000000' }]}>
         ¿Estás sujeto/a a impuestos en los Estados Unidos?
       </Text>
 
-      {/* Enlace informativo sobre la pregunta */}
       <Text
         style={{
           color: '#FF4081',
@@ -58,10 +55,9 @@ const RegisterStep6Screen = () => {
         </Text>
       </Text>
 
-      {/* Opción "No" con ícono de radio */}
       <Pressable
         style={styles.optionContainer}
-        onPress={() => setSelectedOption('no')} // Al presionar, se selecciona "no"
+        onPress={() => setSelectedOption('no')}
       >
         <Icon
           name={selectedOption === 'no' ? 'radiobox-marked' : 'radiobox-blank'}
@@ -73,10 +69,9 @@ const RegisterStep6Screen = () => {
         </Text>
       </Pressable>
 
-      {/* Opción "Sí" con ícono de radio */}
       <Pressable
         style={styles.optionContainer}
-        onPress={() => setSelectedOption('yes')} // Al presionar, se selecciona "si"
+        onPress={() => setSelectedOption('yes')}
       >
         <Icon
           name={selectedOption === 'yes' ? 'radiobox-marked' : 'radiobox-blank'}
@@ -88,8 +83,8 @@ const RegisterStep6Screen = () => {
         </Text>
       </Pressable>
 
-      {/* Botón para continuar al siguiente paso */}
-      <Pressable style={styles.continueButton}>
+      {/* Botón para continuar */}
+      <Pressable style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueText}>continuar</Text>
       </Pressable>
     </View>
@@ -98,18 +93,11 @@ const RegisterStep6Screen = () => {
 
 export default RegisterStep6Screen;
 
-{/* Estilos de la página */}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
     justifyContent: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
-    marginBottom: 30,
   },
   question: {
     fontSize: 16,
@@ -138,3 +126,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+

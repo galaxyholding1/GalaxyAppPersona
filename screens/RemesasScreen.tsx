@@ -1,11 +1,7 @@
 // screens/RemesasScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, CheckBox } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-export default function RemesasScreen() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [addToFavorites, setAddToFavorites] = useState(false);
 
   const users = [
     { name: 'Jesús Murazo Pérez', email: 'jesus@dominio.com', flag: '🇵🇪', note: 'Tienda “San Juan Cali”', verified: true },
@@ -45,22 +41,8 @@ export default function RemesasScreen() {
           </View>
           <Text style={styles.flag}>{user.flag}</Text>
           <Icon name={user.verified ? 'cloud-done-outline' : 'cloud-outline'} size={20} color="#fff" style={{ marginRight: 8 }} />
-          <CheckBox
-            value={selected === user.name}
-            onValueChange={() => setSelected(user.name)}
-          />
         </View>
       ))}
-
-      <View style={styles.checkboxRow}>
-        <CheckBox
-          value={addToFavorites}
-          onValueChange={setAddToFavorites}
-        />
-        <Text style={styles.checkboxLabel}>
-          ¿Quieres añadir los usuarios seleccionados en tus contactos habituales?
-        </Text>
-      </View>
 
       <TouchableOpacity style={styles.continueButton}>
         <Text style={styles.continueText}>continuar</Text>
@@ -142,11 +124,6 @@ const styles = StyleSheet.create({
   flag: {
     fontSize: 18,
     marginHorizontal: 8,
-  },
-  checkboxRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
   },
   checkboxLabel: {
     color: '#fff',

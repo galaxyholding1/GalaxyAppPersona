@@ -8,7 +8,8 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { SvgUri } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function PerfilScreen() {
   const [showMenu, setShowMenu] = useState(false);
@@ -38,7 +39,10 @@ export default function PerfilScreen() {
       {/* Menú desplegable */}
       <Modal visible={showMenu} transparent animationType="fade">
         <View style={styles.modalOverlay}>
-          <View style={styles.menuContainer}>
+          <LinearGradient
+            colors={['#FF6B6B', '#C44BC6']}
+            style={styles.menuContainer}
+          >
             <View style={styles.menuHeader}>
               <Ionicons name="person" size={18} color="#fff" />
               <Text style={styles.menuTitle}>Cambiar</Text>
@@ -59,7 +63,7 @@ export default function PerfilScreen() {
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText}>➤ Crear con la IA</Text>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
         </View>
       </Modal>
     </SafeAreaView>
@@ -115,7 +119,6 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     width: 250,
-    backgroundColor: 'linear-gradient(180deg, #FF6B6B, #C44BC6)',
     borderRadius: 12,
     padding: 20,
   },
@@ -140,4 +143,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
+});
+
 });

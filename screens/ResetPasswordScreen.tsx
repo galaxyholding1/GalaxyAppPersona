@@ -30,7 +30,7 @@ export default function ResetPasswordScreen() {
 
     // Aquí iría el llamado al backend para actualizar la contraseña
     Alert.alert('Éxito', 'Tu contraseña ha sido restablecida.');
-    navigation.navigate('Login'); // o donde quieras redirigir
+    navigation.navigate('LoginScreen'); // o donde quieras redirigir
   };
 
   return (

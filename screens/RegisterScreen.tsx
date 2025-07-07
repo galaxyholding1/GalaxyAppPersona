@@ -1,119 +1,215 @@
-// Importación de módulos y componentes necesarios
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   StyleSheet,
-  TouchableOpacity,
   useColorScheme,
-  Linking,
+  Pressable,
+  ScrollView,
 } from 'react-native';
-import Logo from '../assets/galaxy_logo1.svg'; // ← Importación del logo en formato SVG
-// Pantalla principal de registro con opciones (correo, Google, Facebook)
-const RegisterScreen = ({ navigation }) => {
-  const colorScheme = useColorScheme(); // Detecta el modo claro/oscuro del sistema
-  const isDark = colorScheme === 'dark';
-  
-// Definición del tema de colores dinámico según modo claro/oscuro
-  const theme = {
-    background: isDark ? '#121212' : '#ffffff',
-    text: isDark ? '#ffffff' : '#000000',
-    secondaryText: isDark ? '#cccccc' : '#333333',
-    accent: '#ec008c',
-    purple: '#6a1b9a',
-    buttonText: '#ffffff',
+import { Picker } from '@react-native-picker/picker';
+import CheckBox from 'react-native-check-box';
+import Logo from '../assets/galaxy_logo1.svg'; // Asegúrate que este SVG esté correctamente configurado
+
+interface Props {
+  navigation: any;
+}
+
+const RegisterStep1Screen: React.FC<Props> = ({ navigation }) => {
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  const countryCodes: { [key: string]: string } = {
+    CO: '+57',
+    MX: '+52',
   };
 
-  // Funciones para abrir enlaces externos de Términos y Política de Privacidad
-  const openTerms = () => {
-    Linking.openURL('https://galaxypay.com/terminos');
-  };
-
-  const openPrivacy = () => {
-    Linking.openURL('https://galaxypay.com/privacidad');
-  };
+  useEffect(() => {
+    if (selectedCountry && countryCodes[selectedCountry]) {
+      const code = countryCodes[selectedCountry];
+      if (!phone.startsWith(code)) {
+        setPhone(code + ' ');
+      }
+    }
+  }, [selectedCountry]);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
-        {/* Logo de la aplicación */}
-      <Logo width={120} height={120} style={styles.logo} />
-      {/* Título de la pantalla */}
-      <Text style={[styles.title, { color: theme.accent }]}>
-        Regístrate en Galaxy Pay
-      </Text>
-      
-      {/* Botón de registro por correo */}
-      <TouchableOpacity style={[styles.button, { backgroundColor: theme.purple }]}>
-        <Text style={[styles.buttonText, { color: theme.buttonText }]}>correo electrónico</Text>
-      </TouchableOpacity>
+    <ScrollView
+      style={[styles.container, { backgroundColor: isDark ? '#121212' : '#fff' }]}
+      contentContainerStyle={styles.scrollContent}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.inner}>
+        <Logo width={120} height={120} style={styles.logo} />
 
-      {/* Botones redes sociales */}
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#5e35b1' }]}>
-        <Text style={styles.buttonText}>continuar con google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={[styles.button, { backgroundColor: '#3b5998' }]}>
-        <Text style={styles.buttonText}>continuar con facebook</Text>
-      </TouchableOpacity>
-
-      {/* Texto aceptacion de terminos y condiciones con enlaces */}
-      <Text style={[styles.legalText, { color: theme.secondaryText }]}>
-        Al continuar, confirmas que estás de acuerdo con los{' '}
-        <Text onPress={openTerms} style={{ textDecorationLine: 'underline' }}>
-          Términos de servicio
-        </Text>{' '}
-        de Galaxy Pay y has leído la{' '}
-        <Text onPress={openPrivacy} style={{ textDecorationLine: 'underline' }}>
-          Política de privacidad
+        <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>
+          Te acompañamos en el proceso de{'\n'}registro de forma sencilla y rápida
         </Text>
-        .
-      </Text>
-
-      {/* Enlace para usuarios existentes */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={{ color: theme.accent, marginTop: 20 }}>
-          ¿Ya tienes una cuenta? <Text style={{ fontWeight: 'bold' }}>Iniciar sesión</Text>
+        <Text style={styles.subtitle}>
+          Indícanos tu país y correo electrónico
         </Text>
-      </TouchableOpacity>
-    </View>
+
+        <View style={styles.inputGroup}>
+          <Picker
+            selectedValue={selectedCountry}
+            onValueChange={setSelectedCountry}
+            style={[
+              styles.picker,
+              {
+                backgroundColor: isDark ? '#333' : '#e0e0e0',
+                color: isDark ? '#fff' : '#000',
+              },
+            ]}
+            dropdownIconColor={isDark ? '#fff' : '#000'}
+          >
+            <Picker.Item label="Selecciona un país" value="" />
+            <Picker.Item label="Colombia" value="CO" />
+            <Picker.Item label="México" value="MX" />
+          </Picker>
+
+          <TextInput
+            placeholder="Correo electrónico"
+            placeholderTextColor="#999"
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDark ? '#333' : '#e0e0e0',
+                color: isDark ? '#fff' : '#000',
+              },
+            ]}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+
+          <TextInput
+            placeholder="Teléfono"
+            placeholderTextColor="#999"
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDark ? '#333' : '#e0e0e0',
+                color: isDark ? '#fff' : '#000',
+              },
+            ]}
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+          />
+
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              isChecked={acceptedTerms}
+              onClick={() => setAcceptedTerms(!acceptedTerms)}
+              checkBoxColor={isDark ? '#fff' : '#000'}
+            />
+            <Text style={[styles.checkboxText, { color: isDark ? '#ccc' : '#333' }]}>
+              Acepto términos legales y políticas de privacidad
+            </Text>
+          </View>
+        </View>
+
+        <Text style={[styles.inviteText, { color: isDark ? '#aaa' : '#444' }]}>
+          Me han invitado a unirme a una empresa
+        </Text>
+
+        <Pressable
+          style={styles.continueButton}
+          onPress={() => navigation.navigate('RegisterStep1')}
+        >
+          <Text style={styles.continueButtonText}>Continuar</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 };
 
-{/* Estilos usados en la visual */}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  inner: {
+    padding: 24,
   },
   logo: {
-    marginBottom: 30,
+    alignSelf: 'center',
+    marginBottom: 16,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 30,
+    fontSize: 18,
+    fontWeight: '500',
     textAlign: 'center',
+    marginBottom: 8,
   },
-  button: {
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: '#fff',
+  subtitle: {
     textAlign: 'center',
-    textTransform: 'capitalize',
-    fontSize: 16,
+    color: '#f75c03',
+    fontSize: 13,
+    marginBottom: 20,
   },
-  legalText: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginTop: 25,
+  inputGroup: {
+    gap: 12,
+  },
+  picker: {
+    height: 50,
+    borderRadius: 8,
     paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  input: {
+    height: 50,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+    marginBottom: 20,
+  },
+  checkboxText: {
+    marginLeft: 8,
+    fontSize: 13,
+  },
+  inviteText: {
+    textAlign: 'center',
+    fontSize: 12,
+    marginBottom: 16,
+  },
+  continueButton: {
+    backgroundColor: '#f04e9a',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  continueButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
-export default RegisterScreen;
+export default RegisterStep1Screen;
+
+
+
+
+
+
+
+
+
+
+
+

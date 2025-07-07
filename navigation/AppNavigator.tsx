@@ -1,11 +1,11 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // Screens de autenticación y registro
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import RegisterStep1Screen from '../screens/RegisterStep1Screen';
-import RegisterStep2Screen from '../screens/RegisterStep2Screen';
 import RegisterStep3Screen from '../screens/RegisterStep3Screen';
 import RegisterStep4Screen from '../screens/RegisterStep4Screen';
 import RegisterStep5Screen from '../screens/RegisterStep5Screen';
@@ -20,41 +20,21 @@ import PasswordRecoveryScreen from '../screens/PasswordRecoveryScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import VerificationCodeScreen from '../screens/VerificationCodeScreen';
 
-// Asistente virtual
-//import AssistantWelcomeScreen from '../screens/AssistantWelcomeScreen';
-//import AssistantChatScreen from '../screens/AssistantChatScreen';
-
 // Pantalla principal con Drawer
 import DrawerNavigator from './DrawerNavigator';
 
 // Notificaciones
 import NotificationsScreen from '../screens/NotificationsScreen';
 
-// Flujo de Remesas
-//import RemesaSeleccionScreen from '../screens/RemesaSeleccionScreen';
-//import RemesaFormularioScreen from '../screens/RemesaFormularioScreen';
-//import RemesaRevisionScreen from '../screens/RemesaRevisionScreen';
-//import RemesaBiometriaScreen from '../screens/RemesaBiometriaScreen';
-//import RemesaConfirmacionExitosaScreen from '../screens/RemesaConfirmacionExitosaScreen';
-//import RemesaReporteScreen from '../screens/RemesaReporteScreen';
-
-// Flujo de Avatares / Perfil
-//import PerfilScreen from '../screens/PerfilScreen';
-//import CambiarAvatarMenuScreen from '../screens/CambiarAvatarMenuScreen';
-//import AñadirAvatarIntroScreen from '../screens/AñadirAvatarIntroScreen';
-//import AñadirAvatarFiltrosScreen from '../screens/AñadirAvatarFiltrosScreen';
-//import SeleccionAvatarScreen from '../screens/SeleccionAvatarScreen';
-//import AvatarFinalScreen from '../screens/AvatarFinalScreen';
-
 const Stack = createStackNavigator();
 
 const AppNavigator = () => (
+  <NavigationContainer>
     <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
       {/* Autenticación */}
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="RegisterStep1" component={RegisterStep1Screen} />
-      <Stack.Screen name="RegisterStep2" component={RegisterStep2Screen} />
       <Stack.Screen name="RegisterStep3" component={RegisterStep3Screen} />
       <Stack.Screen name="RegisterStep4" component={RegisterStep4Screen} />
       <Stack.Screen name="RegisterStep5" component={RegisterStep5Screen} />
@@ -70,29 +50,10 @@ const AppNavigator = () => (
       {/* Pantalla principal (Drawer) */}
       <Stack.Screen name="Home" component={DrawerNavigator} />
 
-      {/* Asistente virtual */}
-      {/* <Stack.Screen name="AssistantWelcome" component={AssistantWelcomeScreen} />
-      <Stack.Screen name="AssistantChat" component={AssistantChatScreen} /> */}
-
       {/* Notificaciones */}
       <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
-
-      {/* Flujo de Remesas */}
-      {/* <Stack.Screen name="RemesaSeleccion" component={RemesaSeleccionScreen} />
-      <Stack.Screen name="RemesaFormulario" component={RemesaFormularioScreen} />
-      <Stack.Screen name="RemesaRevision" component={RemesaRevisionScreen} />
-      <Stack.Screen name="RemesaBiometria" component={RemesaBiometriaScreen} />
-      <Stack.Screen name="RemesaConfirmacionExitosa" component={RemesaConfirmacionExitosaScreen} />
-      <Stack.Screen name="RemesaReporte" component={RemesaReporteScreen} /> */}
-
-      {/* Flujo de Avatares / Perfil */}
-      {/* <Stack.Screen name="Perfil" component={PerfilScreen} />
-      <Stack.Screen name="CambiarAvatarMenu" component={CambiarAvatarMenuScreen} />
-      <Stack.Screen name="AñadirAvatarIntro" component={AñadirAvatarIntroScreen} />
-      <Stack.Screen name="AñadirAvatarFiltros" component={AñadirAvatarFiltrosScreen} />
-      <Stack.Screen name="SeleccionAvatar" component={SeleccionAvatarScreen} />
-      <Stack.Screen name="AvatarFinal" component={AvatarFinalScreen} /> */}
     </Stack.Navigator>
+  </NavigationContainer>
 );
 
 export default AppNavigator;

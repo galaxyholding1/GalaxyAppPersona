@@ -1,233 +1,171 @@
+// Pantalla del tercer paso del registro: información laboral
 import React, { useState } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
-  ScrollView,
-  useColorScheme,
   StyleSheet,
+  Platform,
+  useColorScheme,
 } from 'react-native';
-  import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import GalaxyLogo from '../assets/galaxy_logo1.svg'; // SVG importado como componente
 
+//Corregido: incluye RegisterStep7 y RegisterStep8
+type RootStackParamList = {
+  RegisterStep7: undefined;
+  RegisterStep8: undefined;
+};
 
-const OptionCard = ({
-  title,
-  required,
-  expanded,
-  onToggle,
-  children,
-  accepted,
-  onAccept,
-  onReject,
-  theme,
-}) => {
-  const isDark = theme === 'dark';
+type Props = NativeStackScreenProps<RootStackParamList, 'RegisterStep7'>;
+
+const RegisterStep7Screen: React.FC<Props> = ({ navigation }) => {
+  const [direccion1, setDireccion1] = useState('');
+  const [direccion2, setDireccion2] = useState('');
+  const [codigoPostal, setCodigoPostal] = useState('');
+  const [localidad, setLocalidad] = useState('');
+  const [provincia, setProvincia] = useState('');
+  const [pais, setPais] = useState('');
+
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+
+  const isComplete = direccion1 && codigoPostal && localidad && provincia && pais;
+
+  const handleContinue = () => {
+    if (isComplete) {
+      navigation.navigate('RegisterStep8');
+    }
+  };
 
   return (
-    <View style={[styles.card, { backgroundColor: isDark ? '#3c3c3c' : '#f2f2f2' }]}>
-      <TouchableOpacity style={styles.header} onPress={onToggle}>
-        <Text style={[styles.headerText, { color: isDark ? '#fff' : '#000' }]}>
-          {title} {!required && <Text style={{ color: isDark ? '#bbb' : '#888' }}>Opcional</Text>}
-        </Text>
-        <View
-          style={[
-            styles.indicator,
-            accepted
-              ? { backgroundColor: '#ec4899', borderColor: '#ec4899' }
-              : { borderColor: isDark ? '#ffffff' : '#000000' },
-          ]}
-        />
-      </TouchableOpacity>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? '#1d1d1d' : '#f9f9f9' },
+      ]}
+    >
+      {/* Barra de progreso */}
+      <View style={styles.progressBar}>
+        <View style={[styles.step, styles.activeStep]} />
+        <View style={[styles.step, styles.activeStep]} />
+        {[...Array(4)].map((_, i) => (
+          <View key={i} style={styles.step} />
+        ))}
+      </View>
 
-      {expanded && (
-        <View style={[styles.contentBox, { backgroundColor: isDark ? '#444' : '#e6e6e6' }]}>
-          <Text style={[styles.contentText, { color: isDark ? '#fff' : '#000' }]}>{children}</Text>
-          <View style={styles.buttonsRow}>
-            {onReject && (
-              <TouchableOpacity onPress={onReject}>
-                <Text style={styles.rejectText}>No, gracias</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity
-              onPress={onAccept}
-              style={[
-                styles.acceptButton,
-                { backgroundColor: isDark ? '#666' : '#ccc' },
-              ]}
-            >
-              <Text style={{ color: isDark ? '#fff' : '#000' }}>Aceptar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+      {/* Logo SVG */}
+      <View style={styles.logo}>
+        <GalaxyLogo width={100} height={100} />
+      </View>
+
+      <Text style={styles.title}>dirección postal completa</Text>
+
+      {/* Inputs */}
+      <TextInput
+        style={styles.input}
+        placeholder="direccion 1"
+        placeholderTextColor="#ccc"
+        value={direccion1}
+        onChangeText={setDireccion1}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="direccion 2"
+        placeholderTextColor="#ccc"
+        value={direccion2}
+        onChangeText={setDireccion2}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="código postal"
+        placeholderTextColor="#ccc"
+        value={codigoPostal}
+        onChangeText={setCodigoPostal}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="localidad"
+        placeholderTextColor="#ccc"
+        value={localidad}
+        onChangeText={setLocalidad}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="provincia"
+        placeholderTextColor="#ccc"
+        value={provincia}
+        onChangeText={setProvincia}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="país"
+        placeholderTextColor="#ccc"
+        value={pais}
+        onChangeText={setPais}
+      />
+
+      {/* Botón */}
+      <TouchableOpacity style={styles.button} onPress={handleContinue}>
+        <Text style={styles.buttonText}>continuar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default function RegisterStep7Screen() {
-  const [expanded, setExpanded] = useState(null);
-  const [accepted, setAccepted] = useState({
-    terms: false,
-    privacy: false,
-    contacts: false,
-    updates: false,
-    partners: false,
-  });
-
-  const theme = useColorScheme();
-  const isDark = theme === 'dark';
-
-  const toggleExpanded = (key) => {
-    setExpanded(expanded === key ? null : key);
-  };
-
-  const setAccept = (key, value = true) => {
-    setAccepted({ ...accepted, [key]: value });
-    setExpanded(null);
-  };
-
-  const allRequiredAccepted = accepted.terms && accepted.privacy;
-
-  return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#1E1E1E' : '#fff' }]}>
-      <ScrollView>
-        <View style={styles.headerContainer}>
-          <Text style={[styles.mainText, { color: isDark ? '#fff' : '#000' }]}>
-            Para crear una cuenta Galaxy Pay, por favor acepta los términos y condiciones.
-          </Text>
-        </View>
-
-        {[
-          {
-            key: 'terms',
-            title: 'Términos y condiciones',
-            required: true,
-            content:
-              'Solicito una cuenta corriente galaxy pay y acepto el contrato de licencia de la app...',
-          },
-          {
-            key: 'privacy',
-            title: 'Política de Privacidad',
-            required: true,
-            content:
-              'La Política de Privacidad de galaxy pay aplica y el contenido está disponible...',
-          },
-          {
-            key: 'contacts',
-            title: 'Visibilidad para contactos',
-            required: false,
-            content:
-              'Habilita la visibilidad para aprovechar todas las funciones de la app galaxy pay...',
-          },
-          {
-            key: 'updates',
-            title: 'Actualizaciones',
-            required: false,
-            content:
-              'Puedes habilitar la opción de recibir notificaciones sobre novedades...',
-          },
-          {
-            key: 'partners',
-            title: 'Partnerships',
-            required: false,
-            content:
-              'Por este medio, consiento a que galaxy pay envíe mi dirección de correo electrónico...',
-          },
-        ].map(({ key, title, required, content }) => (
-          <OptionCard
-            key={key}
-            title={title}
-            required={required}
-            expanded={expanded === key}
-            accepted={accepted[key]}
-            onToggle={() => toggleExpanded(key)}
-            onAccept={() => setAccept(key)}
-            onReject={required ? null : () => setAccept(key, false)}
-            theme={theme}
-          >
-            {content}
-          </OptionCard>
-        ))}
-
-        <TouchableOpacity
-          disabled={!allRequiredAccepted}
-          style={[
-            styles.submitButton,
-            { backgroundColor: allRequiredAccepted ? '#ec4899' : '#f9a8d4' },
-          ]}
-        >
-          <Text style={styles.submitText}>Crear mi cuenta Galaxy Pay</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
+  container: { flex: 1, padding: 30 },
+  progressBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    paddingHorizontal: 20,
+  },
+  step: {
+    height: 4,
+    backgroundColor: '#444',
+    borderRadius: 2,
     flex: 1,
-    padding: 20,
+    marginHorizontal: 2,
   },
-  headerContainer: {
+  activeStep: {
+    backgroundColor: '#ec008c',
+  },
+  logo: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginVertical: 20,
   },
-  mainText: {
+  title: {
+    color: '#f96d00',
     fontSize: 16,
-    fontWeight: '500',
     textAlign: 'center',
+    marginBottom: 20,
+    textTransform: 'lowercase',
   },
-  card: {
+  input: {
+    backgroundColor: '#333',
+    borderRadius: 10,
+    padding: Platform.OS === 'ios' ? 14 : 10,
+    marginBottom: 15,
+    paddingHorizontal: 15,
+    color: '#fff',
+  },
+  button: {
+    backgroundColor: '#ec008c',
+    paddingVertical: 15,
     borderRadius: 12,
-    padding: 12,
-    marginBottom: 12,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginTop: 30,
     alignItems: 'center',
   },
-  headerText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  indicator: {
-    width: 20,
-    height: 20,
-    borderWidth: 2,
-    borderRadius: 10,
-  },
-  contentBox: {
-    marginTop: 12,
-    borderRadius: 8,
-    padding: 12,
-  },
-  contentText: {
-    fontSize: 13,
-    marginBottom: 12,
-  },
-  buttonsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  rejectText: {
-    color: '#FF9D9D',
-    fontWeight: 'bold',
-  },
-  acceptButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-  },
-  submitButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    marginTop: 24,
-  },
-  submitText: {
-    textAlign: 'center',
+  buttonText: {
     color: '#fff',
-    fontWeight: '600',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 });
+
+export default RegisterStep7Screen;
+

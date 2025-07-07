@@ -1,50 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dimensions,
-  Image,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import bg from "../assets/welcome_bg.svg";
+import Svg from "react-native-svg";
+import Bg from "../assets/welcome_bg.svg";
+import Logo from "../assets/galaxy_logo.svg";
 
-const { height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-// Pantalla inicial con bienvenida y botones para navegar a login o registro
 const WelcomeScreen = ({ navigation }: any) => {
   const handleLogin = () => {
-    navigation.navigate("Login");
+    navigation.navigate('Login');
   };
-
+ 
   const handleRegister = () => {
     navigation.navigate("Register");
   };
 
   const handleKYC = () => {
-    navigation.navigate(""); // TODO: Agregar ruta.
+    navigation.navigate(""); // TODO: Agregar ruta
   };
 
   return (
-    <ImageBackground
-      source={bg as any} // Fondo gráfico
-      style={styles.container}
-      resizeMode="cover"
-    >
-      {/* Texto de bienvenida */}
+    <View style={styles.container}>
+      {/* Fondo SVG completamente ajustado a la pantalla */}
+      <View style={StyleSheet.absoluteFill}>
+        <Bg width={width} height={height} preserveAspectRatio="none" />
+      </View>
+
+      {/* Contenido sobre el fondo */}
       <Text style={styles.title}>Bienvenid@s al futuro</Text>
 
-      {/* Logo de la app */}
-      <Image
-        source={require("../assets/galaxy_logo.svg")}
-        style={styles.logo}
-        resizeMode="contain"
-      />
+      <Logo width={150} height={150} />
 
-      <Text style={styles.brand}>galaxypay</Text>
-
-      {/* Botones principales */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
           <Text style={styles.btnText}>crear cuenta</Text>
@@ -54,32 +46,24 @@ const WelcomeScreen = ({ navigation }: any) => {
           <Text style={styles.btnText}>iniciar sesión</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleKYC} style={styles.kycButton}>
-          <Text style={styles.btnText}>¿Eres empresa?</Text>
+        <TouchableOpacity onPress={handleKYC}>
+          <Text style={styles.kycButton}>¿Eres empresa?</Text>
         </TouchableOpacity>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
-{
-  /* Estilos utilizados en la visual */
-}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-evenly",
-    paddingVertical: height * 0.1,
   },
   title: {
     color: "#fff",
     fontSize: 22,
     marginTop: 40,
-  },
-  logo: {
-    width: 150,
-    height: 150,
   },
   brand: {
     color: "#fff",
@@ -116,3 +100,5 @@ const styles = StyleSheet.create({
 });
 
 export default WelcomeScreen;
+
+

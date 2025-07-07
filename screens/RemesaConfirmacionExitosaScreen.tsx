@@ -59,7 +59,7 @@ export default function RemesaConfirmacionExitosaScreen() {
       {/* Botón volver */}
       <TouchableOpacity
         style={styles.returnButton}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('HomeScreen')}
       >
         <Text style={styles.returnText}>volver</Text>
       </TouchableOpacity>

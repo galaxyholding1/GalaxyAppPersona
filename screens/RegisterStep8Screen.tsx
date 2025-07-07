@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, useColorScheme, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import GalaxyLogo from '../assets/galaxy_logo1.svg';
+
 
 export default function RegisterStep8Screen() {
   const theme = useColorScheme();
   const isDark = theme === 'dark';
 
-  return (
+    return (
     <View style={[styles.container, { backgroundColor: isDark ? '#1E1E1E' : '#FFFFFF' }]}>
       {/* Logo */}
       <View style={styles.logoContainer}>
